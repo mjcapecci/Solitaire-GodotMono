@@ -1,0 +1,9 @@
+{
+    "godotTools.editorPath.godot4": "e:\\GodotGames\\Godot_43\\Gotot_43.exe",
+    "editor.defaultFormatter": "ms-dotnettools.csdevkit",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true,
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp"
+    }
+}

@@ -1,0 +1,39 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Solitaire"
+run/main_scene="res://Scenes/Table/Table.tscn"
+config/features=PackedStringArray("4.3", "C#", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+DeckManager="*res://Globals/DeckManager.cs"
+InputManager="*res://Globals/InputManager.cs"
+
+[display]
+
+window/stretch/mode="canvas_items"
+
+[dotnet]
+
+project/assembly_name="Solitaire"
+
+[editor]
+
+naming/scene_name_casing=1
+naming/script_name_casing=1
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+renderer/rendering_method="mobile"
