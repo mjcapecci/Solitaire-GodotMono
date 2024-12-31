@@ -33,15 +33,15 @@ public partial class Card : Node2D
   {
     _cardSprite = GetNode<Sprite2D>("CardSprite");
     _cardArea = GetNode<Area2D>("CardArea");
-    _cardSprite.Texture = DeckManager.GetSupportTexture("card_back");
+    _cardSprite.Texture = AssetManager.supportTextures["card_back"];
   }
 
   public void FlipCard(bool faceUp)
   {
     IsFaceUp = faceUp;
     _cardSprite.Texture = IsFaceUp
-        ? DeckManager.GetCardTexture($"{Rank}{Suit}")
-        : DeckManager.GetSupportTexture("card_back");
+        ? AssetManager.cardTextures[$"{Rank}{Suit}"]
+        : AssetManager.supportTextures["card_back"];
   }
 
   public List<IZone> FindOverlappingDropZones()
@@ -63,8 +63,13 @@ public partial class Card : Node2D
   {
     var tween = CreateTween();
     tween.Stop();
-    tween.TweenProperty(this, "position", InitialPosition, 0.3f).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+    tween.TweenProperty(this, "position", InitialPosition, 0.1f).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
     tween.Play();
+    tween.Finished += () =>
+    {
+      ZIndex = 1;
+      ActionManager.EmitCardPositionReset(this);
+    };
   }
 
   public void SnapToZone(IZone zone)
@@ -75,11 +80,15 @@ public partial class Card : Node2D
     {
       // Snap the card to the last card's position with an offset
       GlobalPosition = lastCard.GlobalPosition + new Vector2(0, 20); // Adjust vertical offset
+      ZIndex = 1;
+      ActionManager.EmitCardPositionReset(this);
     }
     else
     {
       // Snap to the zone's position if empty
       GlobalPosition = zone.GlobalPosition;
+      ZIndex = 1;
+      ActionManager.EmitCardPositionReset(this);
     }
   }
 
@@ -91,7 +100,8 @@ public partial class Card : Node2D
 
   public void BringToFront()
   {
-    GlobalTopZIndex++;
-    ZIndex = GlobalTopZIndex;
+    // GD.Print(GlobalTopZIndex);
+    // GlobalTopZIndex++;
+    ZIndex = 4096;
   }
 }

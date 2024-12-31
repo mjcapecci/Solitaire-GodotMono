@@ -2,83 +2,66 @@ using Godot;
 
 using System.Collections.Generic;
 
-public partial class TableauZone : Area2D, IZone
+public partial class TableauZone : Area2D
 {
-  private ZoneManager _zoneManager = new ZoneManager();
   private CollisionShape2D _collisionShape;
 
   public override void _Ready()
   {
     _collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
-    AreaEntered += OnAreaEntered;
-    AreaExited += OnAreaExited;
-
-  }
-
-  private void OnAreaEntered(Node area)
-  {
-    if (area.GetParent() is Card card)
-    {
-      _zoneManager.AddCard(card);
-      UpdateActiveCollision();
-    }
-  }
-
-  private void OnAreaExited(Node area)
-  {
-    if (area.GetParent() is Card card)
-    {
-      _zoneManager.RemoveCard(card);
-      UpdateActiveCollision();
-    }
-  }
-
-  public void AddCard(Card card)
-  {
-    _zoneManager.AddCard(card);
-    UpdateActiveCollision();
-  }
-
-  public void RemoveCard(Card card)
-  {
-    _zoneManager.RemoveCard(card);
-    UpdateActiveCollision();
-  }
-
-  private void UpdateActiveCollision()
-  {
-    if (_zoneManager.GetCardCount() > 0)
-    {
-      // Disable the zone's collision
-      _collisionShape.Disabled = true;
-
-      // Enable the last card's collision area
-      var lastCard = _zoneManager.GetTopCard();
-      if (lastCard != null)
-      {
-        lastCard.SetCollisionEnabled(true);
-      }
-    }
-    else
-    {
-      // Enable the zone's collision
-      _collisionShape.Disabled = false;
-    }
   }
 
   public Card GetTopCard()
   {
-    return _zoneManager.GetTopCard();
+    var children = GetChildren();
+    for (int i = children.Count - 1; i >= 0; i--)
+    {
+      if (children[i] is Card card)
+      {
+        return card; // Return the topmost card
+      }
+    }
+    return null; // No cards in this zone
   }
 
-  public List<Card> GetPileFromCard(Card startingCard)
+  public Vector2 GetNextCardPosition()
   {
-    return _zoneManager.GetPileFromCard(startingCard);
+    int cardCount = 0;
+    foreach (var child in GetChildren())
+    {
+      if (child is Card)
+      {
+        cardCount++;
+      }
+    }
+    return new Vector2(0, (cardCount - 1) * 35);
   }
+
+  public List<Card> GetCardsStartingFrom(Card startingCard)
+  {
+    var cards = new List<Card>();
+    bool collect = false;
+
+    foreach (var child in GetChildren())
+    {
+      if (child == startingCard)
+      {
+        collect = true;
+      }
+
+      if (collect && child is Card card)
+      {
+        cards.Add(card);
+      }
+    }
+
+    return cards;
+  }
+
 
   public bool CanAcceptCard(Card card)
   {
-    var topCard = _zoneManager.GetTopCard();
+    var topCard = GetTopCard();
 
     if (topCard == null)
     {
@@ -92,10 +75,7 @@ public partial class TableauZone : Area2D, IZone
 
   private bool IsValidDrop(Card cardToDrop, Card targetCard)
   {
-    bool isAlternatingColor = cardToDrop.SuitDetails.Color == Solitaire.Classes.Color.Red
-        ? targetCard.SuitDetails.Color == Solitaire.Classes.Color.Black
-        : targetCard.SuitDetails.Color == Solitaire.Classes.Color.Red;
-
+    bool isAlternatingColor = cardToDrop.SuitDetails.Color != targetCard.SuitDetails.Color;
     bool isDescending = cardToDrop.Rank == targetCard.Rank - 1;
 
     return isAlternatingColor && isDescending;

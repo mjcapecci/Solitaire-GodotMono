@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://c4j6cc4iisx4o" path="res://Scenes/Zones/TableauZone/TableauZone.tscn" id="8_ju8kg"]
 
 [node name="Table" type="Node2D"]
+y_sort_enabled = true
 metadata/_edit_lock_ = true
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -23,25 +24,33 @@ script = ExtResource("1_7ew3o")
 metadata/_edit_lock_ = true
 
 [node name="Deck" parent="." instance=ExtResource("2_rle7f")]
+z_index = 1
 position = Vector2(187, 140)
 
-[node name="TableauZone1" parent="." instance=ExtResource("8_ju8kg")]
+[node name="TableauZone1" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+y_sort_enabled = true
 position = Vector2(335, 140)
 
-[node name="TableauZone2" parent="." instance=ExtResource("8_ju8kg")]
+[node name="TableauZone2" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+y_sort_enabled = true
 position = Vector2(425, 140)
 
-[node name="TableauZone3" parent="." instance=ExtResource("8_ju8kg")]
+[node name="TableauZone3" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+y_sort_enabled = true
 position = Vector2(515, 140)
 
-[node name="TableauZone4" parent="." instance=ExtResource("8_ju8kg")]
+[node name="TableauZone4" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+y_sort_enabled = true
 position = Vector2(605, 140)
 
-[node name="TableauZone5" parent="." instance=ExtResource("8_ju8kg")]
+[node name="TableauZone5" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+y_sort_enabled = true
 position = Vector2(695, 140)
 
-[node name="TableauZone6" parent="." instance=ExtResource("8_ju8kg")]
+[node name="TableauZone6" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+y_sort_enabled = true
 position = Vector2(785, 140)
 
-[node name="TableauZone7" parent="." instance=ExtResource("8_ju8kg")]
+[node name="TableauZone7" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+y_sort_enabled = true
 position = Vector2(875, 140)

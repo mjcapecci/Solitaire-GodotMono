@@ -7,6 +7,7 @@ size = Vector2(50, 40)
 
 [node name="Deck" type="Area2D"]
 z_index = 4096
+y_sort_enabled = true
 script = ExtResource("1_rs21h")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -2,11 +2,9 @@ using Godot;
 
 using System.Collections.Generic;
 
-public partial class FoundationZone : Area2D, IZone
+public partial class FoundationZone : Area2D
 {
   [Export] Texture2D foundationIconTexture = null;
-
-  private ZoneManager _zoneManager = new ZoneManager();
 
   public override void _Ready()
   {
@@ -24,10 +22,6 @@ public partial class FoundationZone : Area2D, IZone
   // {
   //   throw new System.NotImplementedException();
   // }
-
-  public Card GetTopCard() => _zoneManager.GetTopCard();
-  public void AddCard(Card card) => _zoneManager.AddCard(card);
-  public void RemoveCard(Card card) => _zoneManager.RemoveCard(card);
 
   public bool CanAcceptCard(Card card)
   {
