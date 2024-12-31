@@ -1,5 +1,6 @@
 using Godot;
 
+using Solitaire.Classes;
 using Solitaire.Classes.Enums;
 
 using System;
@@ -9,101 +10,73 @@ using System.Linq;
 public partial class DeckManager : Node
 {
 
-  private static DeckManager Instance;
+  public static DeckManager Instance;
 
   private Dictionary<string, Texture2D> _cardTextures = new Dictionary<string, Texture2D>();
   private Dictionary<string, Texture2D> _supportTextures = new Dictionary<string, Texture2D>();
 
-  private Dictionary<string, (string rank, string suit)> _cards = new Dictionary<string, (string rank, string suit)>
+  private Dictionary<string, (Rank rank, Suit suit)> _cards = new Dictionary<string, (Rank rank, Suit suit)>
   {
-    {"card_clubs_02", ("02", "clubs")},
-    {"card_clubs_03", ("03", "clubs")},
-    {"card_clubs_04", ("04", "clubs")},
-    {"card_clubs_05", ("05", "clubs")},
-    {"card_clubs_06", ("06", "clubs")},
-    {"card_clubs_07", ("07", "clubs")},
-    {"card_clubs_08", ("08", "clubs")},
-    {"card_clubs_09", ("09", "clubs")},
-    {"card_clubs_10", ("10", "clubs")},
-    {"card_clubs_J", ("J", "clubs")},
-    {"card_clubs_Q", ("Q", "clubs")},
-    {"card_clubs_K", ("K", "clubs")},
-    {"card_clubs_A", ("A", "clubs")},
-    {"card_spades_02", ("02", "spades")},
-    {"card_spades_03", ("03", "spades")},
-    {"card_spades_04", ("04", "spades")},
-    {"card_spades_05", ("05", "spades")},
-    {"card_spades_06", ("06", "spades")},
-    {"card_spades_07", ("07", "spades")},
-    {"card_spades_08", ("08", "spades")},
-    {"card_spades_09", ("09", "spades")},
-    {"card_spades_10", ("10", "spades")},
-    {"card_spades_J", ("J", "spades")},
-    {"card_spades_Q", ("Q", "spades")},
-    {"card_spades_K", ("K", "spades")},
-    {"card_spades_A", ("A", "spades")},
-    {"card_hearts_02", ("02", "hearts")},
-    {"card_hearts_03", ("03", "hearts")},
-    {"card_hearts_04", ("04", "hearts")},
-    {"card_hearts_05", ("05", "hearts")},
-    {"card_hearts_06", ("06", "hearts")},
-    {"card_hearts_07", ("07", "hearts")},
-    {"card_hearts_08", ("08", "hearts")},
-    {"card_hearts_09", ("09", "hearts")},
-    {"card_hearts_10", ("10", "hearts")},
-    {"card_hearts_J", ("J", "hearts")},
-    {"card_hearts_Q", ("Q", "hearts")},
-    {"card_hearts_K", ("K", "hearts")},
-    {"card_hearts_A", ("A", "hearts")},
-    {"card_diamonds_02", ("02", "diamonds")},
-    {"card_diamonds_03", ("03", "diamonds")},
-    {"card_diamonds_04", ("04", "diamonds")},
-    {"card_diamonds_05", ("05", "diamonds")},
-    {"card_diamonds_06", ("06", "diamonds")},
-    {"card_diamonds_07", ("07", "diamonds")},
-    {"card_diamonds_08", ("08", "diamonds")},
-    {"card_diamonds_09", ("09", "diamonds")},
-    {"card_diamonds_10", ("10", "diamonds")},
-    {"card_diamonds_J", ("J", "diamonds")},
-    {"card_diamonds_Q", ("Q", "diamonds")},
-    {"card_diamonds_K", ("K", "diamonds")},
-    {"card_diamonds_A", ("A", "diamonds")}
+    {$"{Rank.Two}{Suit.Clubs}", (Rank.Two, Suit.Clubs)},
+    {$"{Rank.Three}{Suit.Clubs}", (Rank.Three, Suit.Clubs)},
+    {$"{Rank.Four}{Suit.Clubs}", (Rank.Four, Suit.Clubs)},
+    {$"{Rank.Five}{Suit.Clubs}", (Rank.Five, Suit.Clubs)},
+    {$"{Rank.Six}{Suit.Clubs}", (Rank.Six, Suit.Clubs)},
+    {$"{Rank.Seven}{Suit.Clubs}", (Rank.Seven, Suit.Clubs)},
+    {$"{Rank.Eight}{Suit.Clubs}", (Rank.Eight, Suit.Clubs)},
+    {$"{Rank.Nine}{Suit.Clubs}", (Rank.Nine, Suit.Clubs)},
+    {$"{Rank.Ten}{Suit.Clubs}", (Rank.Ten, Suit.Clubs)},
+    {$"{Rank.Jack}{Suit.Clubs}", (Rank.Jack, Suit.Clubs)},
+    {$"{Rank.Queen}{Suit.Clubs}", (Rank.Queen, Suit.Clubs)},
+    {$"{Rank.King}{Suit.Clubs}", (Rank.King, Suit.Clubs)},
+    {$"{Rank.Ace}{Suit.Clubs}", (Rank.Ace, Suit.Clubs)},
+    {$"{Rank.Two}{Suit.Diamonds}", (Rank.Two, Suit.Diamonds)},
+    {$"{Rank.Three}{Suit.Diamonds}", (Rank.Three, Suit.Diamonds)},
+    {$"{Rank.Four}{Suit.Diamonds}", (Rank.Four, Suit.Diamonds)},
+    {$"{Rank.Five}{Suit.Diamonds}", (Rank.Five, Suit.Diamonds)},
+    {$"{Rank.Six}{Suit.Diamonds}", (Rank.Six, Suit.Diamonds)},
+    {$"{Rank.Seven}{Suit.Diamonds}", (Rank.Seven, Suit.Diamonds)},
+    {$"{Rank.Eight}{Suit.Diamonds}", (Rank.Eight, Suit.Diamonds)},
+    {$"{Rank.Nine}{Suit.Diamonds}", (Rank.Nine, Suit.Diamonds)},
+    {$"{Rank.Ten}{Suit.Diamonds}", (Rank.Ten, Suit.Diamonds)},
+    {$"{Rank.Jack}{Suit.Diamonds}", (Rank.Jack, Suit.Diamonds)},
+    {$"{Rank.Queen}{Suit.Diamonds}", (Rank.Queen, Suit.Diamonds)},
+    {$"{Rank.King}{Suit.Diamonds}", (Rank.King, Suit.Diamonds)},
+    {$"{Rank.Ace}{Suit.Diamonds}", (Rank.Ace, Suit.Diamonds)},
+    {$"{Rank.Two}{Suit.Hearts}", (Rank.Two, Suit.Hearts)},
+    {$"{Rank.Three}{Suit.Hearts}", (Rank.Three, Suit.Hearts)},
+    {$"{Rank.Four}{Suit.Hearts}", (Rank.Four, Suit.Hearts)},
+    {$"{Rank.Five}{Suit.Hearts}", (Rank.Five, Suit.Hearts)},
+    {$"{Rank.Six}{Suit.Hearts}", (Rank.Six, Suit.Hearts)},
+    {$"{Rank.Seven}{Suit.Hearts}", (Rank.Seven, Suit.Hearts)},
+    {$"{Rank.Eight}{Suit.Hearts}", (Rank.Eight, Suit.Hearts)},
+    {$"{Rank.Nine}{Suit.Hearts}", (Rank.Nine, Suit.Hearts)},
+    {$"{Rank.Ten}{Suit.Hearts}", (Rank.Ten, Suit.Hearts)},
+    {$"{Rank.Jack}{Suit.Hearts}", (Rank.Jack, Suit.Hearts)},
+    {$"{Rank.Queen}{Suit.Hearts}", (Rank.Queen, Suit.Hearts)},
+    {$"{Rank.King}{Suit.Hearts}", (Rank.King, Suit.Hearts)},
+    {$"{Rank.Ace}{Suit.Hearts}", (Rank.Ace, Suit.Hearts)},
+    {$"{Rank.Two}{Suit.Spades}", (Rank.Two, Suit.Spades)},
+    {$"{Rank.Three}{Suit.Spades}", (Rank.Three, Suit.Spades)},
+    {$"{Rank.Four}{Suit.Spades}", (Rank.Four, Suit.Spades)},
+    {$"{Rank.Five}{Suit.Spades}", (Rank.Five, Suit.Spades)},
+    {$"{Rank.Six}{Suit.Spades}", (Rank.Six, Suit.Spades)},
+    {$"{Rank.Seven}{Suit.Spades}", (Rank.Seven, Suit.Spades)},
+    {$"{Rank.Eight}{Suit.Spades}", (Rank.Eight, Suit.Spades)},
+    {$"{Rank.Nine}{Suit.Spades}", (Rank.Nine, Suit.Spades)},
+    {$"{Rank.Ten}{Suit.Spades}", (Rank.Ten, Suit.Spades)},
+    {$"{Rank.Jack}{Suit.Spades}", (Rank.Jack, Suit.Spades)},
+    {$"{Rank.Queen}{Suit.Spades}", (Rank.Queen, Suit.Spades)},
+    {$"{Rank.King}{Suit.Spades}", (Rank.King, Suit.Spades)},
+    {$"{Rank.Ace}{Suit.Spades}", (Rank.Ace, Suit.Spades)},
+
   };
 
   private Dictionary<CardDetails, CardPile> _cardsInPlay = new Dictionary<CardDetails, CardPile>();
+  private List<Card> _allCards = new List<Card>();
 
-  public void AddCardToPlay(CardDetails cardDetails, CardPile location)
-  {
-    if (!_cardsInPlay.ContainsKey(cardDetails))
-    {
-      _cardsInPlay.Add(cardDetails, location);
-    }
-  }
-
-  public void UpdateCardPile(CardDetails cardDetails, CardPile newLocation)
-  {
-    if (_cardsInPlay.ContainsKey(cardDetails))
-    {
-      _cardsInPlay[cardDetails] = newLocation;
-    }
-  }
-
-  public void RemoveCardFromPlay(CardDetails cardDetails)
-  {
-    if (_cardsInPlay.ContainsKey(cardDetails))
-    {
-      _cardsInPlay.Remove(cardDetails);
-    }
-  }
-
-  public CardPile GetCardPile(CardDetails cardDetails)
-  {
-    if (_cardsInPlay.ContainsKey(cardDetails))
-    {
-      return _cardsInPlay[cardDetails];
-    }
-    return default(CardPile);
-  }
+  public Vector2 stockPilePosition = new Vector2(187, 140);
+  public Vector2 wastePilePosition = new Vector2(187, 300);
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
@@ -114,58 +87,58 @@ public partial class DeckManager : Node
 
   private void LoadCardTextures()
   {
-    _cardTextures.Add("card_clubs_02", (Texture2D) GD.Load("res://assets/cards/card_clubs_02.png"));
-    _cardTextures.Add("card_clubs_03", (Texture2D) GD.Load("res://assets/cards/card_clubs_03.png"));
-    _cardTextures.Add("card_clubs_04", (Texture2D) GD.Load("res://assets/cards/card_clubs_04.png"));
-    _cardTextures.Add("card_clubs_05", (Texture2D) GD.Load("res://assets/cards/card_clubs_05.png"));
-    _cardTextures.Add("card_clubs_06", (Texture2D) GD.Load("res://assets/cards/card_clubs_06.png"));
-    _cardTextures.Add("card_clubs_07", (Texture2D) GD.Load("res://assets/cards/card_clubs_07.png"));
-    _cardTextures.Add("card_clubs_08", (Texture2D) GD.Load("res://assets/cards/card_clubs_08.png"));
-    _cardTextures.Add("card_clubs_09", (Texture2D) GD.Load("res://assets/cards/card_clubs_09.png"));
-    _cardTextures.Add("card_clubs_10", (Texture2D) GD.Load("res://assets/cards/card_clubs_10.png"));
-    _cardTextures.Add("card_clubs_J", (Texture2D) GD.Load("res://assets/cards/card_clubs_J.png"));
-    _cardTextures.Add("card_clubs_Q", (Texture2D) GD.Load("res://assets/cards/card_clubs_Q.png"));
-    _cardTextures.Add("card_clubs_K", (Texture2D) GD.Load("res://assets/cards/card_clubs_K.png"));
-    _cardTextures.Add("card_clubs_A", (Texture2D) GD.Load("res://assets/cards/card_clubs_A.png"));
-    _cardTextures.Add("card_spades_02", (Texture2D) GD.Load("res://assets/cards/card_spades_02.png"));
-    _cardTextures.Add("card_spades_03", (Texture2D) GD.Load("res://assets/cards/card_spades_03.png"));
-    _cardTextures.Add("card_spades_04", (Texture2D) GD.Load("res://assets/cards/card_spades_04.png"));
-    _cardTextures.Add("card_spades_05", (Texture2D) GD.Load("res://assets/cards/card_spades_05.png"));
-    _cardTextures.Add("card_spades_06", (Texture2D) GD.Load("res://assets/cards/card_spades_06.png"));
-    _cardTextures.Add("card_spades_07", (Texture2D) GD.Load("res://assets/cards/card_spades_07.png"));
-    _cardTextures.Add("card_spades_08", (Texture2D) GD.Load("res://assets/cards/card_spades_08.png"));
-    _cardTextures.Add("card_spades_09", (Texture2D) GD.Load("res://assets/cards/card_spades_09.png"));
-    _cardTextures.Add("card_spades_10", (Texture2D) GD.Load("res://assets/cards/card_spades_10.png"));
-    _cardTextures.Add("card_spades_J", (Texture2D) GD.Load("res://assets/cards/card_spades_J.png"));
-    _cardTextures.Add("card_spades_Q", (Texture2D) GD.Load("res://assets/cards/card_spades_Q.png"));
-    _cardTextures.Add("card_spades_K", (Texture2D) GD.Load("res://assets/cards/card_spades_K.png"));
-    _cardTextures.Add("card_spades_A", (Texture2D) GD.Load("res://assets/cards/card_spades_A.png"));
-    _cardTextures.Add("card_hearts_02", (Texture2D) GD.Load("res://assets/cards/card_hearts_02.png"));
-    _cardTextures.Add("card_hearts_03", (Texture2D) GD.Load("res://assets/cards/card_hearts_03.png"));
-    _cardTextures.Add("card_hearts_04", (Texture2D) GD.Load("res://assets/cards/card_hearts_04.png"));
-    _cardTextures.Add("card_hearts_05", (Texture2D) GD.Load("res://assets/cards/card_hearts_05.png"));
-    _cardTextures.Add("card_hearts_06", (Texture2D) GD.Load("res://assets/cards/card_hearts_06.png"));
-    _cardTextures.Add("card_hearts_07", (Texture2D) GD.Load("res://assets/cards/card_hearts_07.png"));
-    _cardTextures.Add("card_hearts_08", (Texture2D) GD.Load("res://assets/cards/card_hearts_08.png"));
-    _cardTextures.Add("card_hearts_09", (Texture2D) GD.Load("res://assets/cards/card_hearts_09.png"));
-    _cardTextures.Add("card_hearts_10", (Texture2D) GD.Load("res://assets/cards/card_hearts_10.png"));
-    _cardTextures.Add("card_hearts_J", (Texture2D) GD.Load("res://assets/cards/card_hearts_J.png"));
-    _cardTextures.Add("card_hearts_Q", (Texture2D) GD.Load("res://assets/cards/card_hearts_Q.png"));
-    _cardTextures.Add("card_hearts_K", (Texture2D) GD.Load("res://assets/cards/card_hearts_K.png"));
-    _cardTextures.Add("card_hearts_A", (Texture2D) GD.Load("res://assets/cards/card_hearts_A.png"));
-    _cardTextures.Add("card_diamonds_02", (Texture2D) GD.Load("res://assets/cards/card_diamonds_02.png"));
-    _cardTextures.Add("card_diamonds_03", (Texture2D) GD.Load("res://assets/cards/card_diamonds_03.png"));
-    _cardTextures.Add("card_diamonds_04", (Texture2D) GD.Load("res://assets/cards/card_diamonds_04.png"));
-    _cardTextures.Add("card_diamonds_05", (Texture2D) GD.Load("res://assets/cards/card_diamonds_05.png"));
-    _cardTextures.Add("card_diamonds_06", (Texture2D) GD.Load("res://assets/cards/card_diamonds_06.png"));
-    _cardTextures.Add("card_diamonds_07", (Texture2D) GD.Load("res://assets/cards/card_diamonds_07.png"));
-    _cardTextures.Add("card_diamonds_08", (Texture2D) GD.Load("res://assets/cards/card_diamonds_08.png"));
-    _cardTextures.Add("card_diamonds_09", (Texture2D) GD.Load("res://assets/cards/card_diamonds_09.png"));
-    _cardTextures.Add("card_diamonds_10", (Texture2D) GD.Load("res://assets/cards/card_diamonds_10.png"));
-    _cardTextures.Add("card_diamonds_J", (Texture2D) GD.Load("res://assets/cards/card_diamonds_J.png"));
-    _cardTextures.Add("card_diamonds_Q", (Texture2D) GD.Load("res://assets/cards/card_diamonds_Q.png"));
-    _cardTextures.Add("card_diamonds_K", (Texture2D) GD.Load("res://assets/cards/card_diamonds_K.png"));
-    _cardTextures.Add("card_diamonds_A", (Texture2D) GD.Load("res://assets/cards/card_diamonds_A.png"));
+    _cardTextures.Add($"{Rank.Two}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_02.png"));
+    _cardTextures.Add($"{Rank.Three}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_03.png"));
+    _cardTextures.Add($"{Rank.Four}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_04.png"));
+    _cardTextures.Add($"{Rank.Five}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_05.png"));
+    _cardTextures.Add($"{Rank.Six}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_06.png"));
+    _cardTextures.Add($"{Rank.Seven}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_07.png"));
+    _cardTextures.Add($"{Rank.Eight}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_08.png"));
+    _cardTextures.Add($"{Rank.Nine}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_09.png"));
+    _cardTextures.Add($"{Rank.Ten}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_10.png"));
+    _cardTextures.Add($"{Rank.Jack}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_J.png"));
+    _cardTextures.Add($"{Rank.Queen}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_Q.png"));
+    _cardTextures.Add($"{Rank.King}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_K.png"));
+    _cardTextures.Add($"{Rank.Ace}{Suit.Clubs}", (Texture2D) GD.Load("res://assets/cards/card_clubs_A.png"));
+    _cardTextures.Add($"{Rank.Two}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_02.png"));
+    _cardTextures.Add($"{Rank.Three}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_03.png"));
+    _cardTextures.Add($"{Rank.Four}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_04.png"));
+    _cardTextures.Add($"{Rank.Five}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_05.png"));
+    _cardTextures.Add($"{Rank.Six}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_06.png"));
+    _cardTextures.Add($"{Rank.Seven}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_07.png"));
+    _cardTextures.Add($"{Rank.Eight}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_08.png"));
+    _cardTextures.Add($"{Rank.Nine}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_09.png"));
+    _cardTextures.Add($"{Rank.Ten}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_10.png"));
+    _cardTextures.Add($"{Rank.Jack}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_J.png"));
+    _cardTextures.Add($"{Rank.Queen}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_Q.png"));
+    _cardTextures.Add($"{Rank.King}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_K.png"));
+    _cardTextures.Add($"{Rank.Ace}{Suit.Diamonds}", (Texture2D) GD.Load("res://assets/cards/card_diamonds_A.png"));
+    _cardTextures.Add($"{Rank.Two}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_02.png"));
+    _cardTextures.Add($"{Rank.Three}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_03.png"));
+    _cardTextures.Add($"{Rank.Four}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_04.png"));
+    _cardTextures.Add($"{Rank.Five}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_05.png"));
+    _cardTextures.Add($"{Rank.Six}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_06.png"));
+    _cardTextures.Add($"{Rank.Seven}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_07.png"));
+    _cardTextures.Add($"{Rank.Eight}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_08.png"));
+    _cardTextures.Add($"{Rank.Nine}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_09.png"));
+    _cardTextures.Add($"{Rank.Ten}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_10.png"));
+    _cardTextures.Add($"{Rank.Jack}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_J.png"));
+    _cardTextures.Add($"{Rank.Queen}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_Q.png"));
+    _cardTextures.Add($"{Rank.King}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_K.png"));
+    _cardTextures.Add($"{Rank.Ace}{Suit.Hearts}", (Texture2D) GD.Load("res://assets/cards/card_hearts_A.png"));
+    _cardTextures.Add($"{Rank.Two}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_02.png"));
+    _cardTextures.Add($"{Rank.Three}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_03.png"));
+    _cardTextures.Add($"{Rank.Four}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_04.png"));
+    _cardTextures.Add($"{Rank.Five}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_05.png"));
+    _cardTextures.Add($"{Rank.Six}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_06.png"));
+    _cardTextures.Add($"{Rank.Seven}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_07.png"));
+    _cardTextures.Add($"{Rank.Eight}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_08.png"));
+    _cardTextures.Add($"{Rank.Nine}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_09.png"));
+    _cardTextures.Add($"{Rank.Ten}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_10.png"));
+    _cardTextures.Add($"{Rank.Jack}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_J.png"));
+    _cardTextures.Add($"{Rank.Queen}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_Q.png"));
+    _cardTextures.Add($"{Rank.King}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_K.png"));
+    _cardTextures.Add($"{Rank.Ace}{Suit.Spades}", (Texture2D) GD.Load("res://assets/cards/card_spades_A.png"));
   }
 
   private void LoadSupportTextures()
@@ -173,6 +146,7 @@ public partial class DeckManager : Node
     _supportTextures.Add("card_empty", (Texture2D) GD.Load("res://assets/cards/card_empty.png"));
     _supportTextures.Add("card_back", (Texture2D) GD.Load("res://assets/cards/card_back.png"));
   }
+
 
   public static Texture2D GetCardTexture(string cardName)
   {
@@ -198,41 +172,127 @@ public partial class DeckManager : Node
   {
     var random = new Random();
     var cards = Instance._cards.Keys.ToList();
-
-    for (int i = cards.Count - 1; i > 0; i--)
-    {
-      int j = random.Next(i + 1);
-      (cards[i], cards[j]) = (cards[j], cards[i]);
-    }
+    cards = cards.OrderBy(_ => random.Next()).ToList();
 
     Instance._cardsInPlay.Clear();
 
     foreach (var cardKey in cards)
     {
       var (rank, suit) = Instance._cards[cardKey];
-      var cardDetails = new CardDetails(suit, rank, GetCardColor(suit), $"res://assets/cards/{cardKey}.png");
-      Instance._cardsInPlay.Add(cardDetails, CardPile.StockPile);
+      var cardDetails = new CardDetails
+      {
+        Suit = suit,
+        Rank = rank,
+        SuitDetails = new SuitDetails(suit),
+        Texture = Instance._cardTextures[cardKey],
+        CurrentPile = CardPile.StockPile
+      };
+      Instance._cardsInPlay[cardDetails] = CardPile.StockPile;
     }
 
     return Instance._cardsInPlay;
   }
 
-  public static List<CardDetails> DealHand()
+  public static Card CreateCardInstance(CardDetails details)
   {
-    var shuffledDeck = ShuffleDeck();
-    var hand = new List<CardDetails>();
+    var cardScene = GD.Load<PackedScene>("res://Scenes/Card/Card.tscn");
+    var cardInstance = (Card) cardScene.Instantiate();
+    cardInstance.Initialize(details);
+    cardInstance.GlobalPosition = new Vector2(0, 0); // Adjust the position as needed
 
-    foreach (var card in shuffledDeck.Keys.Take(5))
-    {
-      hand.Add(card);
-    }
-
-    return hand;
+    Instance._allCards.Add(cardInstance);
+    return cardInstance;
   }
 
-  private static string GetCardColor(string suit)
+  public static bool CanDealToTableauZones()
   {
-    return suit == "hearts" || suit == "diamonds" ? "red" : "black";
+    return Instance._cardsInPlay.Values.Count(pile => pile == CardPile.Tableau) == 0;
+  }
+
+  public static bool CanDrawFromStock()
+  {
+    GD.Print(Instance._cardsInPlay.Values.Contains(CardPile.StockPile));
+    return Instance._cardsInPlay.Values.Contains(CardPile.StockPile);
+  }
+
+  public static void DrawFromStock()
+  {
+    var stockCardDetails = Instance._cardsInPlay.FirstOrDefault(kv => kv.Value == CardPile.StockPile).Key;
+
+    if (stockCardDetails != null)
+    {
+      Instance._cardsInPlay[stockCardDetails] = CardPile.WastePile;
+
+      var card = Instance._allCards.First(c => c.Details == stockCardDetails);
+      card.FlipCard(true);
+
+      var wastePileCount = Instance._cardsInPlay.Values.Count(pile => pile == CardPile.WastePile);
+      card.GlobalPosition = new Vector2(187, 240 + wastePileCount * 35); // Adjust the position as needed
+      card.IsDraggable = true;
+    }
+  }
+
+  public static void ResetWasteToStock()
+  {
+    foreach (var cardDetails in Instance._cardsInPlay.Keys.ToList())
+    {
+      if (Instance._cardsInPlay[cardDetails] == CardPile.WastePile)
+      {
+        Instance._cardsInPlay[cardDetails] = CardPile.StockPile;
+      }
+
+      if (Instance._cardsInPlay[cardDetails] == CardPile.StockPile)
+      {
+        var card = Instance._allCards.First(c => c.Details == cardDetails);
+        card.FlipCard(false);
+        card.GlobalPosition = new Vector2(187, 140); // Adjust the position as needed
+      }
+    }
+  }
+
+  public static void DealToTableauZones(List<TableauZone> tableauZones)
+  {
+    int tableauIndex = 0;
+    foreach (var tableauZone in tableauZones)
+    {
+      int cardsToDeal = tableauIndex + 1;
+
+      // Deal cards one by one
+      for (int i = cardsToDeal - 1; i >= 0; i--)
+      {
+        var stockCards = GetStockPileCards();
+        if (stockCards.Count == 0)
+          break;
+
+        var card = stockCards.Last();
+        UpdateCardPile(card, CardPile.Tableau);
+
+        tableauZone.AddCard(card);
+        card.GlobalPosition = tableauZone.GlobalPosition + new Vector2(0, i * 35); // Offset vertically for stacking
+        card.ZIndex = cardsToDeal - i; // Set the z-index to ensure correct stacking order
+        card.FlipCard(i == tableauIndex); // Flip all cards face up
+        card.IsDraggable = i == tableauIndex; // Only the top card is draggable
+      }
+
+      tableauIndex++;
+    }
+  }
+
+  public static List<Card> GetStockPileCards()
+  {
+    return Instance._allCards.Where(card => Instance._cardsInPlay[card.Details] == CardPile.StockPile).ToList();
+  }
+
+  public static List<Card> GetWastePileCards()
+  {
+    return Instance._allCards.Where(card => Instance._cardsInPlay[card.Details] == CardPile.WastePile).ToList();
+  }
+
+  public static void UpdateCardPile(Card card, CardPile newPile)
+  {
+    if (Instance._cardsInPlay.ContainsKey(card.Details))
+    {
+      Instance._cardsInPlay[card.Details] = newPile;
+    }
   }
 }
-
