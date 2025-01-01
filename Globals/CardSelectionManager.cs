@@ -200,9 +200,19 @@ public partial class CardSelectionManager : Node2D
         tween.Finished += () =>
         {
           // Re-increment the ZIndices of all child cards in the initial pile
-          if (_selectedCard?.GetParent() is TableauZone initialZone)
+          if (_selectedCard?.GetParent() is TableauZone tableauZone)
           {
-            var cards = initialZone.GetChildren().OfType<Card>().ToList();
+            var cards = tableauZone.GetChildren().OfType<Card>().ToList();
+
+            for (int i = 0; i < cards.Count; i++)
+            {
+              cards[i].ZIndex = i;
+            }
+          }
+
+          if (_selectedCard?.GetParent() is FoundationZone foundationZone)
+          {
+            var cards = foundationZone.GetChildren().OfType<Card>().ToList();
 
             for (int i = 0; i < cards.Count; i++)
             {

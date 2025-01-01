@@ -82,11 +82,31 @@ public partial class CardMoverManager : Node
 
   private void OnFoundationPlayed(Card card, FoundationZone zone)
   {
+
+    var previousZone = card.GetParent();
+
     card.GetParent().RemoveChild(card);
     zone.AddChild(card);
 
     // Update card position
     card.Position = zone.GetNextCardPosition();
+
+    if (previousZone is TableauZone tableauZone)
+    {
+      var topCard = tableauZone.GetTopCard();
+      if (topCard != null && !topCard.IsFaceUp)
+      {
+        topCard.FlipCard(true); // Flip the card face-up
+        topCard.IsDraggable = true;
+      }
+    }
+
+    // Re-increment the z-indices of all children cards in the tableau zone
+    for (int i = 1; i < zone.GetChildCount(); i++)
+    {
+      var childCard = zone.GetChild<Card>(i);
+      childCard.ZIndex = i;
+    }
 
     DeckManager.UpdateCardPile(card, CardPile.Foundation);
   }
