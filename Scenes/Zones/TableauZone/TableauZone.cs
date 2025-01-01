@@ -2,7 +2,7 @@ using Godot;
 
 using System.Collections.Generic;
 
-public partial class TableauZone : Area2D
+public partial class TableauZone : Area2D, IZone
 {
   private CollisionShape2D _collisionShape;
 

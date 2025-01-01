@@ -1,22 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2jems2pgd4xb"]
+[gd_scene load_steps=3 format=3 uid="uid://b2jems2pgd4xb"]
 
 [ext_resource type="Script" path="res://Scenes/Zones/FoundationZone/FoundationZone.cs" id="1_hm041"]
-[ext_resource type="Texture2D" uid="uid://bv7ld60lo35b3" path="res://assets/zones/color_back.png" id="1_tb5cb"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xl577"]
-size = Vector2(20, 27.75)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xyd3y"]
+size = Vector2(60, 88)
 
-[node name="FoundationZone" type="Area2D" groups=["DropZone"]]
-z_index = -10
-scale = Vector2(2.5, 2.5)
-collision_layer = 2
-collision_mask = 2
+[node name="FoundationZone" type="Area2D"]
 script = ExtResource("1_hm041")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_tb5cb")
-
-[node name="FoundationSuitIcon" type="Sprite2D" parent="."]
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_xl577")
+shape = SubResource("RectangleShape2D_xyd3y")

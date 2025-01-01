@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dtmmq7fiidxg8"]
+[gd_scene load_steps=5 format=3 uid="uid://dtmmq7fiidxg8"]
 
 [ext_resource type="Script" path="res://Scenes/Table/ColorRect.cs" id="1_7ew3o"]
 [ext_resource type="PackedScene" uid="uid://bhdnfw5eio0dj" path="res://Scenes/Deck/Deck.tscn" id="2_rle7f"]
+[ext_resource type="PackedScene" uid="uid://b2jems2pgd4xb" path="res://Scenes/Zones/FoundationZone/FoundationZone.tscn" id="4_t2msk"]
 [ext_resource type="PackedScene" uid="uid://c4j6cc4iisx4o" path="res://Scenes/Zones/TableauZone/TableauZone.tscn" id="8_ju8kg"]
 
 [node name="Table" type="Node2D"]
@@ -27,30 +28,42 @@ metadata/_edit_lock_ = true
 z_index = 1
 position = Vector2(187, 140)
 
-[node name="TableauZone1" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+[node name="TableauZone1" parent="." groups=["DropZones", "TableauZones"] instance=ExtResource("8_ju8kg")]
 y_sort_enabled = true
 position = Vector2(335, 140)
 
-[node name="TableauZone2" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+[node name="TableauZone2" parent="." groups=["DropZones", "TableauZones"] instance=ExtResource("8_ju8kg")]
 y_sort_enabled = true
 position = Vector2(425, 140)
 
-[node name="TableauZone3" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+[node name="TableauZone3" parent="." groups=["DropZones", "TableauZones"] instance=ExtResource("8_ju8kg")]
 y_sort_enabled = true
 position = Vector2(515, 140)
 
-[node name="TableauZone4" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+[node name="TableauZone4" parent="." groups=["DropZones", "TableauZones"] instance=ExtResource("8_ju8kg")]
 y_sort_enabled = true
 position = Vector2(605, 140)
 
-[node name="TableauZone5" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+[node name="TableauZone5" parent="." groups=["DropZones", "TableauZones"] instance=ExtResource("8_ju8kg")]
 y_sort_enabled = true
 position = Vector2(695, 140)
 
-[node name="TableauZone6" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+[node name="TableauZone6" parent="." groups=["DropZones", "TableauZones"] instance=ExtResource("8_ju8kg")]
 y_sort_enabled = true
 position = Vector2(785, 140)
 
-[node name="TableauZone7" parent="." groups=["TableauZones"] instance=ExtResource("8_ju8kg")]
+[node name="TableauZone7" parent="." groups=["DropZones", "TableauZones"] instance=ExtResource("8_ju8kg")]
 y_sort_enabled = true
 position = Vector2(875, 140)
+
+[node name="FoundationZone1" parent="." groups=["DropZones", "FoundationZones"] instance=ExtResource("4_t2msk")]
+position = Vector2(1032, 140)
+
+[node name="FoundationZone2" parent="." groups=["DropZones", "FoundationZones"] instance=ExtResource("4_t2msk")]
+position = Vector2(1032, 240)
+
+[node name="FoundationZone3" parent="." groups=["DropZones", "FoundationZones"] instance=ExtResource("4_t2msk")]
+position = Vector2(1032, 340)
+
+[node name="FoundationZone4" parent="." groups=["DropZones", "FoundationZones"] instance=ExtResource("4_t2msk")]
+position = Vector2(1032, 440)

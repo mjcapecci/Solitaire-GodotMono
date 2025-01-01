@@ -70,6 +70,13 @@ public partial class CardMoverManager : Node
       }
     }
 
+    // Re-increment the z-indices of all children cards in the tableau zone
+    for (int i = 1; i < zone.GetChildCount(); i++)
+    {
+      var childCard = zone.GetChild<Card>(i);
+      childCard.ZIndex = i;
+    }
+
     DeckManager.UpdateCardPile(card, CardPile.Tableau);
   }
 
@@ -77,6 +84,9 @@ public partial class CardMoverManager : Node
   {
     card.GetParent().RemoveChild(card);
     zone.AddChild(card);
+
+    // Update card position
+    card.Position = zone.GetNextCardPosition();
 
     DeckManager.UpdateCardPile(card, CardPile.Foundation);
   }
