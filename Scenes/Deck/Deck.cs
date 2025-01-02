@@ -66,17 +66,14 @@ public partial class Deck : Node2D
   {
     if (_tableauZones.All(zone => zone.GetChildren().OfType<Card>().Count() <= 0))
     {
-      GD.Print("No cards in tableau zones");
       DealToTableauZones();
     }
     else if (_stockpile.GetChildren().OfType<Card>().Any())
     {
-      GD.Print("Drawing from stock");
       DrawFromStock();
     }
     else
     {
-      GD.Print("Resetting waste to stock");
       ResetWasteToStock();
     }
   }

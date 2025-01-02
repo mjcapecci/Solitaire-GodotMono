@@ -154,15 +154,19 @@ public partial class CardSelectionManager : Node2D
           continue;
         }
 
-        var topCard = foundationZone.GetTopCard();
-        if (topCard != null && mousePosition.DistanceTo(topCard.GlobalPosition) < 50)
+        // Foundation zones can only accept one card at a time
+        if (_selectedPile.Count == 1)
         {
-          return foundationZone;
-        }
+          var topCard = foundationZone.GetTopCard();
+          if (topCard != null && mousePosition.DistanceTo(topCard.GlobalPosition) < 50)
+          {
+            return foundationZone;
+          }
 
-        if (topCard == null && mousePosition.DistanceTo(foundationZone.GlobalPosition) < 50)
-        {
-          return foundationZone;
+          if (topCard == null && mousePosition.DistanceTo(foundationZone.GlobalPosition) < 50)
+          {
+            return foundationZone;
+          }
         }
       }
     }
@@ -226,6 +230,7 @@ public partial class CardSelectionManager : Node2D
 
   private void DeselectCard()
   {
+    ActionManager.EmitCardPositionReset(_selectedCard);
     _selectedCard = null;
     _selectedPile.Clear();
   }

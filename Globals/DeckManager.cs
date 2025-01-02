@@ -55,11 +55,10 @@ public partial class DeckManager : Node
     return cardInstance;
   }
 
-  public static void ReshuffleStockpile(Area2D stockpile)
+  public static void FlipStockpile(Area2D stockpile)
   {
-    var random = new Random();
     var children = stockpile.GetChildren().OfType<Card>().ToList();
-    children = children.OrderBy(_ => random.Next()).ToList();
+    children.Reverse();
 
     foreach (var child in children)
     {

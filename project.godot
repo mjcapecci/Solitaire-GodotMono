@@ -22,6 +22,7 @@ ActionManager="*res://Globals/ActionManager.cs"
 AssetManager="*res://Globals/AssetManager.cs"
 CardMoverManager="*res://Globals/CardMoverManager.cs"
 CardSelectionManager="*res://Globals/CardSelectionManager.cs"
+GameManager="*res://Globals/GameManager.cs"
 
 [display]
 
