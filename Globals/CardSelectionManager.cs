@@ -222,8 +222,6 @@ public partial class CardSelectionManager : Node2D
         };
       }
     }
-
-
   }
 
   private void DeselectCard()

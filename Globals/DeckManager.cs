@@ -11,7 +11,7 @@ public partial class DeckManager : Node
 {
   public static DeckManager Instance;
 
-  private Dictionary<CardDetails, CardPile> _cardsInPlay = new Dictionary<CardDetails, CardPile>();
+  private List<CardDetails> _cardsInPlay = new List<CardDetails>();
   private List<Card> _allCards = new List<Card>();
 
   public override void _Ready()
@@ -19,13 +19,14 @@ public partial class DeckManager : Node
     Instance = this;
   }
 
-  public static Dictionary<CardDetails, CardPile> ShuffleDeck()
+  public static List<CardDetails> ShuffleDeck()
   {
     var random = new Random();
     var cards = AssetManager.cards.Keys.ToList();
     cards = cards.OrderBy(_ => random.Next()).ToList();
 
     Instance._cardsInPlay.Clear();
+    var shuffledCards = new List<CardDetails>();
 
     foreach (var cardKey in cards)
     {
@@ -36,12 +37,12 @@ public partial class DeckManager : Node
         Rank = rank,
         SuitDetails = new SuitDetails(suit),
         Texture = AssetManager.cardTextures[cardKey],
-        CurrentPile = CardPile.StockPile
       };
-      Instance._cardsInPlay[cardDetails] = CardPile.StockPile;
+
+      shuffledCards.Add(cardDetails);
     }
 
-    return Instance._cardsInPlay;
+    return shuffledCards;
   }
 
   public static Card CreateCardInstance(CardDetails details)
@@ -54,34 +55,16 @@ public partial class DeckManager : Node
     return cardInstance;
   }
 
-  public static List<Card> GetCardsInPile(CardPile pile)
+  public static void ReshuffleStockpile(Area2D stockpile)
   {
-    return Instance._allCards
-        .Where(card => Instance._cardsInPlay[card.Details] == pile)
-        .ToList();
-  }
+    var random = new Random();
+    var children = stockpile.GetChildren().OfType<Card>().ToList();
+    children = children.OrderBy(_ => random.Next()).ToList();
 
-  public static void UpdateCardPile(Card card, CardPile newPile)
-  {
-    if (Instance._cardsInPlay.ContainsKey(card.Details))
+    foreach (var child in children)
     {
-      Instance._cardsInPlay[card.Details] = newPile;
-    }
-  }
-
-  public static bool HasCardsInPile(CardPile pile)
-  {
-    return Instance._cardsInPlay.Values.Contains(pile);
-  }
-
-  public static void ResetWasteToStock()
-  {
-    foreach (var cardDetails in Instance._cardsInPlay.Keys.ToList())
-    {
-      if (Instance._cardsInPlay[cardDetails] == CardPile.WastePile)
-      {
-        Instance._cardsInPlay[cardDetails] = CardPile.StockPile;
-      }
+      stockpile.RemoveChild(child);
+      stockpile.AddChild(child);
     }
   }
 }

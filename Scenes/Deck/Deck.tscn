@@ -5,10 +5,18 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vvcf6"]
 size = Vector2(50, 40)
 
-[node name="Deck" type="Area2D"]
+[node name="Deck" type="Node2D"]
 z_index = 4096
 y_sort_enabled = true
 script = ExtResource("1_rs21h")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="StockPile" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StockPile"]
+shape = SubResource("RectangleShape2D_vvcf6")
+
+[node name="WastePile" type="Area2D" parent="."]
+position = Vector2(0, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WastePile"]
 shape = SubResource("RectangleShape2D_vvcf6")

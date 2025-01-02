@@ -5,14 +5,21 @@ using Solitaire.Classes.Enums;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class Deck : Area2D
+public partial class Deck : Node2D
 {
-  private CollisionShape2D _collisionShape;
+
+  private Area2D _stockpile;
+  private Area2D _wastePile;
+  private CollisionShape2D _stockpileCollisionShape;
+  private CollisionShape2D _wastePileCollisionShape;
   private List<TableauZone> _tableauZones;
 
   public override void _Ready()
   {
-    _collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
+    _stockpile = GetNode<Area2D>("StockPile");
+    _wastePile = GetNode<Area2D>("WastePile");
+    _stockpileCollisionShape = GetNode<CollisionShape2D>("StockPile/CollisionShape2D");
+    _wastePileCollisionShape = GetNode<CollisionShape2D>("WastePile/CollisionShape2D");
 
     // Locate Tableau Zones
     _tableauZones = new List<TableauZone>();
@@ -34,7 +41,7 @@ public partial class Deck : Area2D
       if (mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Left)
       {
         var mousePosition = mouseEvent.GlobalPosition;
-        if (_collisionShape.GlobalPosition.DistanceTo(mousePosition) <= 100)
+        if (_stockpileCollisionShape.GlobalPosition.DistanceTo(mousePosition) <= 50)
         {
           OnStockPileClicked();
         }
@@ -42,31 +49,34 @@ public partial class Deck : Area2D
     }
   }
 
-  private void PopulateStockPile(Dictionary<CardDetails, CardPile> shuffledDeck)
+  private void PopulateStockPile(List<CardDetails> shuffledDeck)
   {
-    foreach (var cardDetails in shuffledDeck.Keys)
+    foreach (var cardDetails in shuffledDeck)
     {
       var card = DeckManager.CreateCardInstance(cardDetails);
-      AddChild(card);
+      _stockpile.AddChild(card);
 
       // Place all cards stacked at the StockPile position
-      card.GlobalPosition = _collisionShape.GlobalPosition;
+      card.GlobalPosition = _stockpileCollisionShape.GlobalPosition;
       card.FlipCard(false); // Start face-down
     }
   }
 
   private void OnStockPileClicked()
   {
-    if (!DeckManager.HasCardsInPile(CardPile.Tableau))
+    if (_tableauZones.All(zone => zone.GetChildren().OfType<Card>().Count() <= 0))
     {
+      GD.Print("No cards in tableau zones");
       DealToTableauZones();
     }
-    else if (DeckManager.HasCardsInPile(CardPile.StockPile))
+    else if (_stockpile.GetChildren().OfType<Card>().Any())
     {
+      GD.Print("Drawing from stock");
       DrawFromStock();
     }
     else
     {
+      GD.Print("Resetting waste to stock");
       ResetWasteToStock();
     }
   }
@@ -80,14 +90,11 @@ public partial class Deck : Area2D
 
       for (int i = 0; i < cardsToDeal; i++)
       {
-        var stockCards = DeckManager.GetCardsInPile(CardPile.StockPile);
+        var stockCards = _stockpile.GetChildren().OfType<Card>().ToList();
         if (stockCards.Count == 0)
           break;
 
         var card = stockCards.Last();
-        DeckManager.UpdateCardPile(card, CardPile.Tableau);
-
-        // Emit the action to move the card to the tableau zone
         ActionManager.EmitTableauPlayed(card, tableauZone);
 
         // Flip only the topmost card
@@ -103,11 +110,7 @@ public partial class Deck : Area2D
 
   private void DrawFromStock()
   {
-    var stockCards = DeckManager.GetCardsInPile(CardPile.StockPile);
-    if (stockCards.Count == 0)
-      return;
-
-    var card = stockCards[stockCards.Count - 1];
+    var card = _stockpile.GetChildren().OfType<Card>().Last();
     ActionManager.EmitCardDrawn(card);
   }
 

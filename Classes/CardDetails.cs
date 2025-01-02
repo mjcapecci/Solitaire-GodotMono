@@ -10,5 +10,4 @@ public partial class CardDetails
   public Rank Rank { get; set; }
   public SuitDetails SuitDetails { get; set; }
   public Texture2D Texture { get; set; }
-  public CardPile CurrentPile { get; set; } // New property
 }
