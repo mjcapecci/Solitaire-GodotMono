@@ -100,6 +100,16 @@ public partial class GameManager : Node
     return false;
   }
 
+  private FoundationZone FindFoundationZone(Card card)
+  {
+    foreach (var foundationZone in GetTree().GetNodesInGroup("FoundationZones"))
+    {
+      if (foundationZone is FoundationZone zone && zone.CanAcceptCard(card))
+        return zone;
+    }
+    return null;
+  }
+
   public void AutoWin()
   {
     while (true)
@@ -132,15 +142,5 @@ public partial class GameManager : Node
       if (!cardMoved)
         break;
     }
-  }
-
-  private FoundationZone FindFoundationZone(Card card)
-  {
-    foreach (var foundationZone in GetTree().GetNodesInGroup("FoundationZones"))
-    {
-      if (foundationZone is FoundationZone zone && zone.CanAcceptCard(card))
-        return zone;
-    }
-    return null;
   }
 }

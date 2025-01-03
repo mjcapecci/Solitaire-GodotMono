@@ -1,7 +1,5 @@
 using Godot;
 
-using Solitaire.Classes.Enums;
-
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,7 +21,7 @@ public partial class Deck : Node2D
 
     // Locate Tableau Zones
     _tableauZones = new List<TableauZone>();
-    for (int i = 1; i <= 7; i++) // Assuming nodes are named TableauZone1, TableauZone2, etc.
+    for (int i = 1; i <= 7; i++)
     {
       var tableauZone = GetNode<TableauZone>($"../TableauZone{i}");
       _tableauZones.Add(tableauZone);
@@ -58,7 +56,7 @@ public partial class Deck : Node2D
 
       // Place all cards stacked at the StockPile position
       card.GlobalPosition = _stockpileCollisionShape.GlobalPosition;
-      card.FlipCard(false); // Start face-down
+      card.FlipCard(false);
     }
   }
 

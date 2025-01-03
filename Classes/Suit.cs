@@ -1,17 +1,11 @@
+using Solitaire.Classes.Enums;
+
 namespace Solitaire.Classes
 {
   public enum Color
   {
     Red,
     Black
-  }
-
-  public enum Suit
-  {
-    Hearts = 1,
-    Diamonds = 2,
-    Clubs = 3,
-    Spades = 4
   }
 
   public class SuitDetails

@@ -37,28 +37,27 @@ public partial class CardMoverManager : Node
 
   private void OnCardDrawn(Card card)
   {
-
-    var cardIndex = card.GetIndex();
-    var parent = card.GetParent();
-
-    for (int i = cardIndex; i < cardIndex + 3 && i < parent.GetChildCount(); i++)
-    {
-      var siblingCard = parent.GetChild<Card>(i);
-      siblingCard.FlipCard(true);
-      siblingCard.GetParent()?.RemoveChild(siblingCard);
-      _wastePile.AddChild(siblingCard);
-    }
-
     card.FlipCard(true);
     card.GetParent()?.RemoveChild(card);
     _wastePile.AddChild(card);
+
     // Ensure only three cards are visible in the waste pile
     var visibleCards = _wastePile.GetChildren().OfType<Card>().Reverse().Take(3).ToList();
     for (int i = 0; i < visibleCards.Count; i++)
     {
+      visibleCards[i].Restore();
       visibleCards[i].Position = new Vector2(0, 35 * i);
       visibleCards[i].IsDraggable = (i == 0);
       visibleCards[i].ZIndex = visibleCards.Count - i;
+    }
+
+    var allCards = _wastePile.GetChildren().OfType<Card>().ToList();
+    foreach (var c in allCards)
+    {
+      if (!visibleCards.Contains(c))
+      {
+        c.Discard();
+      }
     }
   }
 
@@ -70,8 +69,9 @@ public partial class CardMoverManager : Node
       {
         card.GetParent()?.RemoveChild(card);
         _stockPile.AddChild(card);
-        card.Position = new Vector2(0, 0);
-        card.FlipCard(false); // Face-down
+        card.Position = Vector2.Zero;
+        card.Restore();
+        card.FlipCard(false);
         card.IsDraggable = false;
       }
     }
@@ -85,9 +85,18 @@ public partial class CardMoverManager : Node
     var visibleCards = _wastePile.GetChildren().OfType<Card>().Reverse().Take(3).ToList();
     for (int i = 0; i < visibleCards.Count; i++)
     {
+      visibleCards[i].Restore();
       visibleCards[i].Position = new Vector2(0, 35 * i);
       visibleCards[i].IsDraggable = (i == 0);
       visibleCards[i].ZIndex = visibleCards.Count - i;
+    }
+    var allCards = _wastePile.GetChildren().OfType<Card>().ToList();
+    foreach (var c in allCards)
+    {
+      if (!visibleCards.Contains(c))
+      {
+        c.Discard();
+      }
     }
   }
 
@@ -97,9 +106,18 @@ public partial class CardMoverManager : Node
     var visibleCards = _wastePile.GetChildren().OfType<Card>().Reverse().Take(3).ToList();
     for (int i = 0; i < visibleCards.Count; i++)
     {
+      visibleCards[i].Restore();
       visibleCards[i].Position = new Vector2(0, 35 * i);
       visibleCards[i].IsDraggable = (i == 0);
       visibleCards[i].ZIndex = visibleCards.Count - i;
+    }
+    var allCards = _wastePile.GetChildren().OfType<Card>().ToList();
+    foreach (var c in allCards)
+    {
+      if (!visibleCards.Contains(c))
+      {
+        c.Discard();
+      }
     }
   }
 
@@ -113,7 +131,6 @@ public partial class CardMoverManager : Node
       zone.AddChild(card);
     }
 
-    // Update card position
     card.Position = (zone as IZone).GetNextCardPosition();
 
     if (previousZone is TableauZone tableauZone)
@@ -121,7 +138,7 @@ public partial class CardMoverManager : Node
       var topCard = tableauZone.GetTopCard();
       if (topCard != null && !topCard.IsFaceUp)
       {
-        topCard.FlipCard(true); // Flip the card face-up
+        topCard.FlipCard(true);
         topCard.IsDraggable = true;
       }
     }

@@ -1,6 +1,7 @@
 using Godot;
 
 using Solitaire.Classes;
+using Solitaire.Classes.Enums;
 
 public partial class Card : Node2D
 {
@@ -10,9 +11,10 @@ public partial class Card : Node2D
   public CardDetails Details;
   public Suit Suit;
   public SuitDetails SuitDetails;
-  public Solitaire.Classes.Enums.Rank Rank;
+  public Rank Rank;
   public bool IsFaceUp { get; set; }
   public bool IsDraggable { get; set; }
+  public bool IsDiscarded { get; set; }
 
   public void Initialize(CardDetails details)
   {
@@ -33,6 +35,18 @@ public partial class Card : Node2D
   {
     IsFaceUp = faceUp;
     _cardSprite.Texture = faceUp ? AssetManager.cardTextures[$"{Rank}{Suit}"] : AssetManager.supportTextures["card_back"];
+  }
+
+  public void Discard()
+  {
+    IsDiscarded = true;
+    ZIndex = -1;
+  }
+
+  public void Restore()
+  {
+    IsDiscarded = false;
+    ZIndex = 1;
   }
 
   public void BringToFront()

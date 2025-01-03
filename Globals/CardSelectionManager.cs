@@ -27,6 +27,14 @@ public partial class CardSelectionManager : Node2D
       }
     }
 
+    if (@event is InputEventMouseButton rightClickEvent && rightClickEvent.ButtonIndex == MouseButton.Right)
+    {
+      if (rightClickEvent.IsReleased())
+      {
+        HandleRightClick(rightClickEvent.GlobalPosition);
+      }
+    }
+
     if (_selectedCard != null && @event is InputEventMouseMotion mouseMotionEvent)
     {
       MoveSelectedPileTo(mouseMotionEvent.GlobalPosition);
@@ -226,6 +234,62 @@ public partial class CardSelectionManager : Node2D
         };
       }
     }
+  }
+
+  private void HandleRightClick(Vector2 mousePosition)
+  {
+    var spaceState = GetTree().Root.GetWorld2D().DirectSpaceState;
+
+    var queryParameters = new PhysicsPointQueryParameters2D
+    {
+      CollideWithAreas = true,
+      CollideWithBodies = false,
+      Position = mousePosition
+    };
+
+    var results = spaceState.IntersectPoint(queryParameters);
+
+    Card topCard = null;
+    int topZIndex = int.MinValue;
+
+
+    foreach (var result in results)
+    {
+      if (result["collider"].As<Area2D>() is Area2D area && area.GetParent() is Card card && card.IsDraggable)
+      {
+
+        if (card.ZIndex > topZIndex)
+        {
+          topCard = card;
+          topZIndex = card.ZIndex;
+        }
+
+        if (topCard.GetParent() is TableauZone tableauZone && tableauZone.GetTopCard() != topCard)
+        {
+          // If the card is in a tableau zone and is not the top card, do nothing
+          return;
+        }
+
+        if (TryAutoMoveToFoundation(topCard))
+        {
+          return;
+        }
+      }
+    }
+  }
+
+  private bool TryAutoMoveToFoundation(Card card)
+  {
+    foreach (var node in GetTree().GetNodesInGroup("FoundationZones"))
+    {
+      if (node is FoundationZone foundationZone && foundationZone.CanAcceptCard(card))
+      {
+        ActionManager.EmitFoundationPlayed(card, foundationZone);
+        return true;
+      }
+    }
+
+    return false;
   }
 
   private void DeselectCard()
